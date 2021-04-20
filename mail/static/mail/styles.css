@@ -1,3 +1,44 @@
 textarea {
     min-height: 400px;
 }
+
+.email {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    margin-top: 5px;
+    padding-left: 5px;
+}
+
+@keyframes body {
+    0% {
+        opacity: 0;
+    }
+
+    100% {opacity: 1;
+    }
+}
+.body {
+    animation-name: open;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    padding-left: 5px;
+    
+}
+
+.sender {
+    font-weight: bold;
+}
+
+.subject {
+    margin-left: 15px;
+}
+
+.timestamp {
+    float: right;
+    padding-right: 5px;
+}

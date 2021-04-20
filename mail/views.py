@@ -41,6 +41,7 @@ def compose(request):
     recipients = []
     for email in emails:
         try:
+            print(User.objects.filter(email=email))
             user = User.objects.get(email=email)
             recipients.append(user)
         except User.DoesNotExist:
