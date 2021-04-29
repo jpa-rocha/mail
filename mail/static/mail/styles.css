@@ -2,32 +2,12 @@ textarea {
     min-height: 400px;
 }
 
-.email {
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
+.header {
     margin-top: 5px;
-    padding-left: 5px;
-}
-
-@keyframes body {
-    0% {
-        opacity: 0;
-    }
-
-    100% {opacity: 1;
-    }
-}
-.body {
-    animation-name: open;
-    animation-duration: 2s;
-    animation-fill-mode: forwards;
-    animation-play-state: paused;
     border-color: black;
     border-style: solid;
     border-width: 1px;
     padding-left: 5px;
-    
 }
 
 .sender {
@@ -41,4 +21,19 @@ textarea {
 .timestamp {
     float: right;
     padding-right: 5px;
+}
+
+.info {
+    font-weight: bold;
+}
+
+#email-info {
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+#email-body {
+    margin-top: 5px;
+    border-width: 1px;
+    padding-left: 5px;
 }
