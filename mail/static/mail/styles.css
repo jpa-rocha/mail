@@ -15,7 +15,9 @@ textarea {
 }
 
 .subject {
-    margin-left: 15px;
+    float : right;
+    text-align: start;
+    margin-right: 25vw;
 }
 
 .timestamp {

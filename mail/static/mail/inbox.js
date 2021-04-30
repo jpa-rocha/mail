@@ -74,12 +74,24 @@ function load_mailbox(mailbox) {
 
 function mail_sort(mailbox) {
 
+  // Prevent reply and archive buttons from appearing in the "sent" mailbox
+  archive = document.querySelector('#archive');
+  reply = document.querySelector('#reply');
+  if (mailbox === 'sent') {
+      reply.style.display = 'none';
+      archive.style.display = 'none';
+  }
+  else {
+      reply.style.display = 'inline-block';
+      archive.style.display = 'inline-block';
+  }
   // Appropriate mailbox is inputed
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
 
     // Print emails
+    console.log(emails)
     emails.forEach(email =>{
 
         // Create container assign class and id
@@ -102,6 +114,18 @@ function mail_sort(mailbox) {
         const sender = document.createElement('span');
         sender.classList.add('sender');
         sender.innerHTML = email.sender
+        if (mailbox === 'sent') {
+          const recipients = email.recipients
+          if (recipients.length > 2) {
+            sender.innerHTML = `To: ${email.recipients[0]}, ${email.recipients[1]}, +${recipients.length - 2}`
+          }
+          else if (recipients.length === 2){
+            sender.innerHTML = `To: ${email.recipients[0]}, ${email.recipients[1]}`
+          }
+          else {
+            sender.innerHTML = `To: ${email.recipients[0]}`
+          }
+        }
 
         // Create span for subject, assign innerHTML and add class to it
         const subject = document.createElement('span');
@@ -115,9 +139,9 @@ function mail_sort(mailbox) {
 
         // Append created elements to header as children
         document.getElementsByClassName(`header ${email.id}`)[0].appendChild(sender);
-        document.getElementsByClassName(`header ${email.id}`)[0].appendChild(subject);
         document.getElementsByClassName(`header ${email.id}`)[0].appendChild(timestamp);
-
+        document.getElementsByClassName(`header ${email.id}`)[0].appendChild(subject);
+        
         // Check if email is read - if not alter background color
         const read = email.read
         if (read === false) {
@@ -161,8 +185,6 @@ function open_email(id) {
         body = document.getElementById('email-body');
         body.innerHTML = email.body
         archive = document.querySelector('#archive');
-        reply = document.querySelector('#reply');
-        user = document.querySelector('#useremail');
         archivestatus = email.archived;
 
         // Sets archive button to "Archive" or "Unarchive"
@@ -171,20 +193,6 @@ function open_email(id) {
         }
         else {
           archive.innerHTML = 'Archive'
-        }
-
-        // Hides reply and archive buttons if email is in the sent category
-        if (useremail.textContent !== email.sender){
-          reply.style.display = 'inline-block';
-          archive.style.display = 'inline-block';
-        }
-        else if (email.recipients.includes(email.sender)) {
-          reply.style.display = 'inline-block';
-          archive.style.display = 'inline-block';
-        }
-        else {
-          reply.style.display = 'none';
-          archive.style.display = 'none';
         }
 });
 }
@@ -205,6 +213,7 @@ function archive_mail(id) {
           archived : true
       })
     })
+    .then( ()=> load_mailbox('inbox'))
   }
   else {
 
@@ -214,12 +223,11 @@ function archive_mail(id) {
       body: JSON.stringify({
           archived : false
       })
-    })  
+    }) 
+    .then( ()=> load_mailbox('inbox')) 
   }
-
-  // Load inbox
-  load_mailbox('inbox');
 }
+
 
 function reply_email(id) {
   emailid = parseInt(id.innerHTML);
