@@ -176,8 +176,8 @@ function open_email(id) {
         id.innerHTML = email.id
         sender = document.getElementById('sender');
         sender.innerHTML = email.sender;
-        sender = document.getElementById('recipient');
-        sender.innerHTML = email.recipients;
+        recipients = document.getElementById('recipient');
+        recipients.innerHTML = email.recipients;
         subject = document.getElementById('subject');
         subject.innerHTML = email.subject;
         timestamp = document.getElementById('timestamp');
