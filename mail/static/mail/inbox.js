@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   load_mailbox('inbox');
 
   // Send email
-  document.querySelector('#compose-form').addEventListener('submit', post_mail);
+  document.querySelector('#subbtn').addEventListener('click', post_mail);
 
   // Add event listener for archive
   var emailid = document.querySelector('#email-id');
@@ -52,9 +52,8 @@ function post_mail() {
     .then(result => {
         // Print result
         console.log(result);
-    });
-  load_mailbox('sent');
-  return false
+    })
+    .then( () => load_mailbox('sent'))
 }
 
 
