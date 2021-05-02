@@ -38,8 +38,8 @@ function compose_email() {
 function post_mail() {
 
   const recipients = document.querySelector('#compose-recipients').value
-  const subject = document.querySelector('#compose-subject').value
-  const body = document.querySelector('#compose-body').value
+  const subject = document.querySelector('#compose-subject').value 
+  const body = document.querySelector('#compose-body').value + '\r\n '
     fetch('/emails', {
       method: 'POST',
       body: JSON.stringify({
@@ -49,10 +49,6 @@ function post_mail() {
       })
     })
     .then(response => response.json())
-    .then(result => {
-        // Print result
-        console.log(result);
-    })
     .then( () => load_mailbox('sent'))
 }
 
@@ -89,8 +85,6 @@ function mail_sort(mailbox) {
   .then(response => response.json())
   .then(emails => {
 
-    // Print emails
-    console.log(emails)
     emails.forEach(email =>{
 
         // Create container assign class and id
@@ -182,7 +176,7 @@ function open_email(id) {
         timestamp = document.getElementById('timestamp');
         timestamp.innerHTML = email.timestamp;
         body = document.getElementById('email-body');
-        body.innerHTML = email.body
+        body.innerHTML = email.body.replace(new RegExp('\r?\n','g'), '<br>');
         archive = document.querySelector('#archive');
         archivestatus = email.archived;
 
@@ -237,17 +231,19 @@ function reply_email(id) {
       const subject = email.subject;
       const body = email.body;
       const timestamp = email.timestamp;
-      if (subject.slice(0,2) === 'Re:'){
+      if (subject.slice(0,3) === 'Re:'){
         document.querySelector('#compose-recipients').value = recipient;
         document.querySelector('#compose-subject').value = subject;
-        document.querySelector('#compose-body').value = `On ${timestamp}, ${recipient} wrote: 
+        document.querySelector('#compose-body').value = `\r\n
+        On ${timestamp}, ${recipient} wrote:\r\n
         ${body}`; 
       }
       else{
         document.querySelector('#compose-recipients').value = recipient;
         document.querySelector('#compose-subject').value = `Re: ${subject}`;
-        document.querySelector('#compose-body').value = `On ${timestamp}, ${recipient} wrote: 
-        "${body}"`; 
+        document.querySelector('#compose-body').value = `\r\n
+        On ${timestamp}, ${recipient} wrote:\r\n 
+        ${body}`; 
       }
       document.querySelector('#emails-view').style.display = 'none';
       document.querySelector('#compose-view').style.display = 'block';
